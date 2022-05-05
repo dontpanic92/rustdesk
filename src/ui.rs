@@ -669,16 +669,39 @@ impl UI {
     }
 
     fn t(&self, name: String) -> String {
-        crate::client::translate(name)
+        let locale = self.get_current_locale();
+        crate::client::translate_locale(name, &locale)
     }
 
     fn is_xfce(&self) -> bool {
         crate::platform::is_xfce()
     }
+
+    fn set_locale(&self, locale: String) {
+        self.set_local_option("UI_LOCALE".to_string(), locale);
+    }
+
+    fn get_current_locale(&self) -> String {
+        let locale = self.get_local_option("UI_LOCALE".to_string());
+        if locale.is_empty() {
+            sys_locale::get_locale().unwrap_or_default().to_lowercase()
+        } else {
+            locale
+        }
+    }
+
+    fn get_available_locale(&self) -> sciter::Value {
+        let mut langs: Vec<String> = crate::client::AVAILABLE_LANGS.keys().into_iter().map(|s| s.to_string()).collect();
+        langs.sort();
+        langs.into_iter().collect()
+    }
 }
 
 impl sciter::EventHandler for UI {
     sciter::dispatch_script_call! {
+        fn set_locale(String);
+        fn get_current_locale();
+        fn get_available_locale();
         fn t(String);
         fn is_xfce();
         fn get_id();
