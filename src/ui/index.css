@@ -366,6 +366,24 @@ div#myid svg#menu {
     right: -1em;
 }
 
+div#topright-area {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+}
+
+div#topright-area > img#menu {
+    width: 2em;
+    border-radius: 1em;
+    border: 1px solid color(border);
+    image-rendering: optimize-quality;
+}
+
+div#topright-area > img#menu:hover {
+    background: color(hover-border);
+    border-color: color(hover-border);
+}
+
 div.remote-session svg#menu {
     position: absolute;
     right: 0;

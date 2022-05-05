@@ -336,6 +336,45 @@ function editDirectAccessPort() {
       });
 }
 
+class TranslationMenu: Reactor.Component {
+    function render() {
+        return <div #topright-area>
+            {this.renderPop()}
+            <img#menu src="./translate.png" />
+        </div>;
+    }
+
+    function renderPop() {
+        var locale_list = handler.get_available_locale();
+        var current_locale = handler.get_current_locale();
+        return <popup>
+            <menu.context #config-options>
+                {locale_list.map(function(name) {
+                    var cls = (name == current_locale) ? "selected" : "";
+                    return <li id={name} class={cls}><span>{svg_checkmark}</span>{name}</li>;
+                })}
+            </menu>
+        </popup>;
+    }
+
+    event click $(img#menu) (_, me) {
+        this.showTranslationMenu();
+    }
+
+    function showTranslationMenu() {
+        var menu = this.$(menu#config-options);
+        this.$(img#menu).popup(menu);
+    }
+
+
+    event click $(menu#config-options>li) (_, me) {
+        if (me.id) {
+            handler.set_locale(me.id);
+            app.update();
+        }
+    }
+}
+
 class App: Reactor.Component
 {
     function this() {
@@ -375,6 +414,7 @@ class App: Reactor.Component
                 </div>
                 <div .right-pane>
                     <div .right-content>
+                        <TranslationMenu />
                         <div .card-connect>
                             <div .title>{translate('Control Remote Desktop')}</div>
                             <ID @{this.remote_id} />

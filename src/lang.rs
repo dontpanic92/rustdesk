@@ -11,6 +11,22 @@ mod ru;
 mod eo;
 mod ptbr;
 
+lazy_static::lazy_static! {
+    pub static ref AVAILABLE_LANGS: std::collections::HashMap<&'static str, &'static std::collections::HashMap<&'static str, &'static str>> = [
+        ("en", en::T.deref()),
+        ("fr", fr::T.deref()),
+        ("cn", cn::T.deref()),
+        ("it", it::T.deref()),
+        ("tw", tw::T.deref()),
+        ("de", de::T.deref()),
+        ("ru", ru::T.deref()),
+        ("eo", eo::T.deref()),
+        ("ptbr", ptbr::T.deref()),
+        ("br", ptbr::T.deref()),
+        ("pt", ptbr::T.deref()),
+    ].iter().cloned().collect();
+}
+
 #[cfg(not(any(target_os = "android", target_os = "ios")))]
 pub fn translate(name: String) -> String {
     let locale = sys_locale::get_locale().unwrap_or_default().to_lowercase();
@@ -29,19 +45,8 @@ pub fn translate_locale(name: String, locale: &str) -> String {
             .to_owned();
     }
     let lang = lang.to_lowercase();
-    let m = match lang.as_str() {
-        "fr" => fr::T.deref(),
-        "cn" => cn::T.deref(),
-        "it" => it::T.deref(),
-        "tw" => tw::T.deref(),
-        "de" => de::T.deref(),
-        "ru" => ru::T.deref(),
-        "eo" => eo::T.deref(),
-        "ptbr" => ptbr::T.deref(),
-        "br" => ptbr::T.deref(),
-        "pt" => ptbr::T.deref(),
-        _ => en::T.deref(),
-    };
+    let default_t = &en::T.deref();
+    let m = AVAILABLE_LANGS.get(lang.as_str()).or(Some(default_t)).unwrap();
     if let Some(v) = m.get(&name as &str) {
         v.to_string()
     } else {
