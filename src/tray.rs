@@ -30,7 +30,7 @@ pub fn start_tray(options: Arc<Mutex<HashMap<String, String>>>) {
         .build()
         .unwrap();
     let old_state = Arc::new(Mutex::new(0));
-    event_loop.run(move |event, et, control_flow| {
+    event_loop.run(move |event, _, control_flow| {
         if options.lock().unwrap().get("ipc-closed").is_some() {
             *control_flow = ControlFlow::Exit;
             return;
