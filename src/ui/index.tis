@@ -210,6 +210,7 @@ class MyIdMenu: Reactor.Component {
                 <li #login>{translate('Login')}</li>}
                 {handler.is_ok_change_id() && key_confirmed ? <li #change-id>{translate('Change ID')}</li> : ""}
                 <div .separator />
+                {is_win ? <li #enable-minimize-to-tray><span>{svg_checkmark}</span>{translate('minimize_to_tray')}</li> : ""}
                 <li #about>{translate('About')} {" "}{handler.get_app_name()}</li>
             </menu>
         </popup>;

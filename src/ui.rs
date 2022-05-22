@@ -452,6 +452,15 @@ impl UI {
     fn closing(&mut self, x: i32, y: i32, w: i32, h: i32) {
         crate::server::input_service::fix_key_down_timeout_at_exit();
         LocalConfig::set_size(x, y, w, h);
+
+        #[cfg(target_os = "windows")]
+        {
+            // Minimize to tray if it's enabled
+            if self.get_option("enable-minimize-to-tray".to_string()) != "N" {
+                let (_, _, _, exe) = crate::platform::get_install_info();
+                std::process::Command::new(&exe).arg("--tray").spawn().ok();
+            }
+        }
     }
 
     fn get_size(&mut self) -> Value {
