@@ -5,7 +5,7 @@
   <a href="#como-compilar-con-docker">Docker</a> •
   <a href="#estructura-de-archivos">Estructura</a> •
   <a href="#captura-de-pantalla">Captura de pantalla</a><br>
-  [<a href="README-ZH.md">中文</a>] | [<a href="README-ES.md">Español</a>] | [<a href="README-FR.md">Français</a>] | [<a href="README-DE.md">Deutsch</a>] | [<a href="README-PL.md">Polski</a>] | [<a href="README-FI.md">Suomi</a>] | [<a href="README-ML.md">മലയാളം</a>] | [<a href="README-JP.md">日本語</a>] | [<a href="README-NL.md">Nederlands</a>] | [<a href="README-IT.md">Italiano</a>] | [<a href="README-RU.md">Русский</a>] | [<a href="README-PTBR.md">Português (Brasil)</a>] | [<a href="README-EO.md">Esperanto</a>] | [<a href="README-KR.md">한국어</a>]<br>
+  [<a href="README-ZH.md">中文</a>] | [<a href="README-ES.md">Español</a>] | [<a href="README-FA.md">فارسی</a>] | [<a href="README-FR.md">Français</a>] | [<a href="README-DE.md">Deutsch</a>] | [<a href="README-PL.md">Polski</a>] | [<a href="README-FI.md">Suomi</a>] | [<a href="README-ML.md">മലയാളം</a>] | [<a href="README-JP.md">日本語</a>] | [<a href="README-NL.md">Nederlands</a>] | [<a href="README-IT.md">Italiano</a>] | [<a href="README-RU.md">Русский</a>] | [<a href="README-PTBR.md">Português (Brasil)</a>] | [<a href="README-EO.md">Esperanto</a>] | [<a href="README-KR.md">한국어</a>]<br>
   <b>Necesitamos tu ayuda para traducir este README a tu idioma</b>
 </p>
 
@@ -124,7 +124,7 @@ Entonces, cada vez que necesites compilar una modificación, ejecuta el siguient
 docker run --rm -it -v $PWD:/home/user/rustdesk -v rustdesk-git-cache:/home/user/.cargo/git -v rustdesk-registry-cache:/home/user/.cargo/registry -e PUID="$(id -u)" -e PGID="$(id -g)" rustdesk-builder
 ```
 
-Ten en cuenta que la primera compilación puede tardar más tiempo antes de que las dependencias se almacenen en la caché, las siguientes compilaciones serán más rápidas. Además, si necesitas especificar diferentes argumentos a la orden de compilación, puede hacerlo al final de la linea de comandos en el apartado`<OPTIONAL-ARGS>`. Por ejemplo, si desea compilar una versión optimizada para publicación, deberá ejecutar el comando anterior seguido de `---release`. El ejecutable resultante estará disponible en la carpeta de destino en su sistema, y puede ser ejecutado con:
+Ten en cuenta que la primera compilación puede tardar más tiempo antes de que las dependencias se almacenen en la caché, las siguientes compilaciones serán más rápidas. Además, si necesitas especificar diferentes argumentos a la orden de compilación, puede hacerlo al final de la linea de comandos en el apartado`<OPTIONAL-ARGS>`. Por ejemplo, si desea compilar una versión optimizada para publicación, deberá ejecutar el comando anterior seguido de `--release`. El ejecutable resultante estará disponible en la carpeta de destino en su sistema, y puede ser ejecutado con:
 
 ```sh
 target/debug/rustdesk

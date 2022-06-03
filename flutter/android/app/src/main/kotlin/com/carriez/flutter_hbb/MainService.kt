@@ -1,8 +1,11 @@
+package com.carriez.flutter_hbb
+
 /**
  * Capture screen,get video and audio,send to rust.
- * Handle notification
+ * Dispatch notifications
+ *
+ * Inspired by [droidVNC-NG] https://github.com/bk138/droidVNC-NG
  */
-package com.carriez.flutter_hbb
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -70,9 +73,21 @@ class MainService : Service() {
     }
 
     @Keep
+    @RequiresApi(Build.VERSION_CODES.N)
+    fun rustMouseInput(mask: Int, x: Int, y: Int) {
+        InputService.ctx?.onMouseInput(mask,x,y)
+    }
+
+    @Keep
     fun rustGetByName(name: String): String {
         return when (name) {
-            "screen_size" -> "${SCREEN_INFO.width}:${SCREEN_INFO.height}"
+            "screen_size" -> {
+                JSONObject().apply {
+                    put("width",SCREEN_INFO.width)
+                    put("height",SCREEN_INFO.height)
+                    put("scale",SCREEN_INFO.scale)
+                }.toString()
+            }
             else -> ""
         }
     }
@@ -191,10 +206,6 @@ class MainService : Service() {
     }
 
     override fun onDestroy() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            InputService.ctx?.disableSelf()
-        }
-        InputService.ctx = null
         checkMediaPermission()
         super.onDestroy()
     }
@@ -383,10 +394,6 @@ class MainService : Service() {
 
         mediaProjection = null
         checkMediaPermission()
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            InputService.ctx?.disableSelf()
-        }
-        InputService.ctx = null
         stopForeground(true)
         stopSelf()
     }

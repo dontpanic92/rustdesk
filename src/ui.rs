@@ -616,8 +616,10 @@ impl UI {
     }
 
     fn fix_login_wayland(&mut self) {
+        /*
         #[cfg(target_os = "linux")]
         crate::platform::linux::fix_login_wayland();
+        */
     }
 
     fn current_is_wayland(&mut self) -> bool {
@@ -628,9 +630,11 @@ impl UI {
     }
 
     fn modify_default_login(&mut self) -> String {
+        /*
         #[cfg(target_os = "linux")]
         return crate::platform::linux::modify_default_login();
         #[cfg(not(target_os = "linux"))]
+        */
         return "".to_owned();
     }
 
