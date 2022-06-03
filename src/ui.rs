@@ -4,6 +4,8 @@ mod inline;
 #[cfg(target_os = "macos")]
 mod macos;
 pub mod remote;
+pub mod win_privacy;
+
 use crate::common::SOFTWARE_UPDATE_URL;
 use crate::ipc;
 use hbb_common::{
