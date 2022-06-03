@@ -13,6 +13,8 @@ enum Events {
     DoubleClickTrayIcon,
     StopService,
     StartService,
+    Restore,
+    Quit,
 }
 
 pub fn start_tray(options: Arc<Mutex<HashMap<String, String>>>) {
@@ -23,6 +25,7 @@ pub fn start_tray(options: Arc<Mutex<HashMap<String, String>>>) {
         .sender_winit(proxy)
         .icon_from_buffer(icon)
         .tooltip("RustDesk")
+        .on_click(Events::DoubleClickTrayIcon)
         .on_double_click(Events::DoubleClickTrayIcon)
         .build()
         .unwrap();
@@ -55,20 +58,33 @@ pub fn start_tray(options: Arc<Mutex<HashMap<String, String>>>) {
                     Events::StopService,
                 );
             }
+            m = m
+                .separator()
+                .item(
+                    &crate::client::translate("Restore".to_owned()),
+                    Events::Restore,
+                )
+                .item(&crate::client::translate("Quit".to_owned()), Events::Quit);
             tray_icon.set_menu(&m).ok();
             *old_state.lock().unwrap() = stopped;
         }
 
         match event {
             Event::UserEvent(e) => match e {
-                Events::DoubleClickTrayIcon => {
+                Events::DoubleClickTrayIcon | Events::Restore => {
                     crate::run_me(Vec::<&str>::new()).ok();
+
+                    // Prevent following Click/DoubleClick events
+                    std::process::exit(0);
                 }
                 Events::StopService => {
                     crate::ipc::set_option("stop-service", "Y");
                 }
                 Events::StartService => {
                     crate::ipc::set_option("stop-service", "");
+                }
+                Events::Quit => {
+                    *control_flow = ControlFlow::Exit;
                 }
             },
             _ => (),

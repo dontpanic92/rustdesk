@@ -27,5 +27,6 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("doc_mac_permission", "https://rustdesk.com/docs/en/manual/mac/#enable-permissions"),
         ("doc_fix_wayland", "https://rustdesk.com/docs/en/manual/linux/#x11-required"),
         ("server_not_support", "Not yet supported by the server"),
+        ("minimize_to_tray", "Minimize to Tray when closing main window"),
     ].iter().cloned().collect();
 }
